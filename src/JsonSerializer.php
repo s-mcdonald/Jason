@@ -35,7 +35,7 @@ class JsonSerializer
         return json_encode($classObject,  $flags | JSON_BIGINT_AS_STRING);
     }
 
-    public function collectProperties(
+    private function collectProperties(
         ReflectionClass $reflectionClass,
         JasonSerializable $object,
         \stdClass $classObject): void
