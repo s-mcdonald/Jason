@@ -1,23 +1,15 @@
 <?php
 
-use SamMcDonald\Jason\Enums\JsonOutputStyle;
-use SamMcDonald\Jason\JsonSerializer;
+require_once '../vendor/autoload.php';
 
-require_once './SampleClasses/User.php';
-require_once './SampleClasses/History.php';
+use SamMcDonald\Jason\Jason;
 
-$user = new User();
-$user->name = "Foo";
-$user->setCreditCard(54454.5);
-$user->phoneNumbers = [
-    '044455444',
-    '244755465',
-];
+echo "\n";
+echo "\n";
+$jsonString = '{"foo":"bar","array":[1,2,3,4,5]}';
 
-$user->history = new History();
-
-$serializer = new JsonSerializer();
-echo $serializer->serialize($user, JsonOutputStyle::Pretty);
+echo "\n";
+echo Jason::pretty($jsonString);
 
 echo "\n";
 echo "\n";
