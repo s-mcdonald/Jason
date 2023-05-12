@@ -28,6 +28,7 @@ class JsonSerializer
         $reflectionClass = new ReflectionClass($object);
 
         $this->collectProperties($reflectionClass, $object, $classObject);
+        $this->collectMethods($reflectionClass, $object, $classObject);
 
         $flags = ($displayMode === JsonOutputStyle::Pretty) ? JSON_PRETTY_PRINT :  0;
         return json_encode($classObject,  $flags | JSON_BIGINT_AS_STRING);
@@ -60,11 +61,63 @@ class JsonSerializer
                 if ($attrib->getName() === Property::class) {
                     foreach ($attrib->getArguments() as $ag) {
                         $addToObjectName = $ag;
+                        break;
                     }
                 }
             }
 
             $classObject->{$addToObjectName} = $propertyValue;
+        }
+    }
+
+    private function collectMethods(
+        ReflectionClass $reflectionClass,
+        JasonSerializable $object,
+        \stdClass $classObject
+    ): void
+    {
+        $methods = $reflectionClass->getMethods(
+            ReflectionProperty::IS_PUBLIC |
+            ReflectionProperty::IS_PROTECTED |
+            ReflectionProperty::IS_PRIVATE
+        );
+
+        foreach ($methods as $method) {
+            $addToObject = false;
+            $addToObjectName = $method->getName();
+
+            if ($method->isConstructor() || $method->isDestructor() || !$method->hasReturnType()) {
+                continue;
+            }
+
+            $returnType = $method->getReturnType();
+            if ($returnType->getName() === 'void') {
+                continue;
+            }
+
+            $methodValue = $object->{$method->getName()}();
+            if (!$this->allowNulls && $methodValue === null) {
+                continue;
+            }
+
+            if ($method->getNumberOfParameters() > 0) {
+                continue;
+            }
+
+            $attributes = $method->getAttributes(Property::class);
+            foreach ($attributes as $attrib) {
+                if ($attrib->getName() === Property::class) {
+                    foreach ($attrib->getArguments() as $ag) {
+                        $addToObject = true;
+                        $addToObjectName = $ag;
+                        break;
+                    }
+                }
+            }
+
+            if ($addToObject) {
+                $classObject->{$addToObjectName} = $methodValue;
+            }
         }
     }
 }

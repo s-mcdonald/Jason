@@ -11,6 +11,7 @@ class User implements JasonSerializable
 {
     #[Property('userName')]
     public string $name;
+    public static string $staticProp = 'fooBar';
 
     #[Property('willNotBeSerialized')]
     public string $dontSerializeUnInstantiatedProperty;
@@ -38,5 +39,11 @@ class User implements JasonSerializable
     public function doSomething(): string
     {
         return 'foo';
+    }
+
+    #[Property('doSomething3')]
+    public static function dontDoSomething(): string
+    {
+        return 'bar';
     }
 }
