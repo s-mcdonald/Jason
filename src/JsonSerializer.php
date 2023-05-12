@@ -15,7 +15,8 @@ class JsonSerializer
     use BitWiser;
 
     public function __construct(private bool $bigIntAsString = true,
-                                private bool $allowNulls = false)
+                                private bool $allowNulls = false,
+                                private bool $allowStatics = true)
     {
         if ($this->bigIntAsString) {
             $this->setFlag(JSON_BIGINT_AS_STRING);
@@ -52,6 +53,11 @@ class JsonSerializer
             if (!$prop->isInitialized($object)) {
                 continue;
             }
+
+            if ($prop->isStatic() && !$this->allowStatics) {
+                continue;
+            }
+
             $propertyValue = $prop->getValue($object);
             if (!$this->allowNulls && $propertyValue === null) {
                 continue;
@@ -101,6 +107,10 @@ class JsonSerializer
             }
 
             if ($method->getNumberOfParameters() > 0) {
+                continue;
+            }
+
+            if ($method->isStatic() && !$this->allowStatics) {
                 continue;
             }
 
