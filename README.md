@@ -2,9 +2,7 @@
 [![Source](https://img.shields.io/badge/source-S_McDonald-blue.svg)](https://github.com/s-mcdonald/Jason)
 [![Source](https://img.shields.io/badge/license-MIT-gold.svg)](https://github.com/s-mcdonald/Jason)
 
-`Jason` ...
-
-
+Serialize any object to Json using this syntax.
 ```php
 $serializer = new JsonSerializer();
 echo $serializer->serialize($objectImplementsJasonSerializable);
@@ -12,6 +10,9 @@ echo $serializer->serialize($objectImplementsJasonSerializable);
 
 
 
+To make this work, just apply the Property attribute to your properties.
+You can pass a string arg if you want to change the name of the property for the
+serialized json string.
 
 ```php
 
