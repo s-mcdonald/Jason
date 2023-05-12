@@ -27,6 +27,17 @@ class JsonSerializer
         $classObject = new \stdClass;
         $reflectionClass = new ReflectionClass($object);
 
+        $this->collectProperties($reflectionClass, $object, $classObject);
+
+        $flags = ($displayMode === JsonOutputStyle::Pretty) ? JSON_PRETTY_PRINT :  0;
+        return json_encode($classObject,  $flags | JSON_BIGINT_AS_STRING);
+    }
+
+    public function collectProperties(
+        ReflectionClass $reflectionClass,
+        JasonSerializable $object,
+        \stdClass $classObject): void
+    {
         $properties = $reflectionClass->getProperties(
             ReflectionProperty::IS_PUBLIC |
             ReflectionProperty::IS_PROTECTED |
@@ -34,10 +45,10 @@ class JsonSerializer
         );
 
         foreach ($properties as $prop) {
-            $attributes =  $prop->getAttributes(Property::class);
+            $attributes = $prop->getAttributes(Property::class);
             $addToObjectName = $prop->getName();
 
-            if(!$prop->isInitialized($object)) {
+            if (!$prop->isInitialized($object)) {
                 continue;
             }
             $propertyValue = $prop->getValue($object);
@@ -47,7 +58,7 @@ class JsonSerializer
 
             foreach ($attributes as $attrib) {
                 if ($attrib->getName() === Property::class) {
-                    foreach($attrib->getArguments() as $ag) {
+                    foreach ($attrib->getArguments() as $ag) {
                         $addToObjectName = $ag;
                     }
                 }
@@ -55,8 +66,5 @@ class JsonSerializer
 
             $classObject->{$addToObjectName} = $propertyValue;
         }
-
-        $flags = ($displayMode === JsonOutputStyle::Pretty) ? JSON_PRETTY_PRINT :  0;
-        return json_encode($classObject,  $flags | JSON_BIGINT_AS_STRING);
     }
 }

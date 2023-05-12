@@ -8,8 +8,6 @@ $serializer = new JsonSerializer();
 echo $serializer->serialize($objectImplementsJasonSerializable);
 ```
 
-
-
 To make this work, just apply the Property attribute to your properties.
 You can pass a string arg if you want to change the name of the property for the
 serialized json string.

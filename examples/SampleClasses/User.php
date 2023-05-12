@@ -33,4 +33,10 @@ class User implements JasonSerializable
     {
         $this->creditCard = $credit;
     }
+
+    #[Property('doSomething')]
+    public function doSomething(): string
+    {
+        return 'foo';
+    }
 }
