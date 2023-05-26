@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SamMcDonald\Jason\Assert;
 
 use SamMcDonald\Jason\Exceptions\InvalidArgumentException;
+use SamMcDonald\Jason\Validator\JsonValidator;
 
 class JsonAsserter
 {
@@ -14,7 +15,7 @@ class JsonAsserter
 
     public static function assertStringIsValidJson(string $json, string $message = ''): void
     {
-        if (!static::validateJsonString($json)) {
+        if (!JsonValidator::isValidJson($json)) {
             static::throwInvalidArgument(
                 $message ?: 'Expected valid Json. Received Invalid Json structure'
             );
@@ -24,14 +25,5 @@ class JsonAsserter
     public static function throwInvalidArgument(string $message): void
     {
         throw new InvalidArgumentException($message);
-    }
-
-    protected static function validateJsonString(string $json): bool
-    {
-        if (empty($json)) {
-            return false;
-        }
-
-        return \json_decode($json, true) && json_last_error() === JSON_ERROR_NONE;
     }
 }
