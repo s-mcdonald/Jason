@@ -9,11 +9,7 @@ use SamMcDonald\Jason\Loaders\LocalFileLoader;
 
 class Jason
 {
-    /**
-     * @deprecated - Next version Serialize will be lowercase 'S' for the method name.
-     *               To prevent any issues you can now use 'Jason::toJsonString()`
-     */
-   public static function Serialize(JasonSerializable $object): string
+   public static function serialize(JasonSerializable $object): string
    {
        $jsonSerializer = new JsonSerializer(true, false, true);
        return $jsonSerializer->serialize($object);

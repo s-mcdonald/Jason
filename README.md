@@ -67,6 +67,12 @@ echo $serializer->toJsonString($user);
 * [Dependencies](#dependencies)
 
 
+### JsonAsserter
+
+```php
+JsonAsserter::assertStringIsValidJson('{"foo":"bar"}');
+```
+
 <a name="installation"></a>
 ## Installation
 

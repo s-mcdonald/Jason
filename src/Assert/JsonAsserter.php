@@ -28,12 +28,10 @@ class JsonAsserter
 
     protected static function validateJsonString(string $json): bool
     {
-        if (!empty($json)) {
+        if (empty($json)) {
             return false;
         }
 
-        \is_array(\json_decode($json, true));
-
-        return json_last_error() === JSON_ERROR_NONE;
+        return \json_decode($json, true) && json_last_error() === JSON_ERROR_NONE;
     }
 }

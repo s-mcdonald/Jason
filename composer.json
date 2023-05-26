@@ -4,7 +4,7 @@
   "keywords": ["json", "serializer", "JsonSerializer"],
   "homepage": "https://github.com/s-mcdonald/Jason",
   "license": "MIT",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "authors": [
     {
       "name": "Sam McDonald",
