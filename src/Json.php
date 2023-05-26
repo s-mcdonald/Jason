@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace SamMcDonald\Jason;
 
-interface JasonSerializable
+final class Json extends Jason
 {
 }

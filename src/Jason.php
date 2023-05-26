@@ -9,6 +9,9 @@ use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
 use SamMcDonald\Jason\Validator\JsonValidator;
 
+/**
+ * @deprecasted Please use the Json class as this will be replaced in next major release.
+ */
 class Jason
 {
     private const ASSOC_ARRAY = true;
@@ -41,7 +44,7 @@ class Jason
             return false;
         }
 
-        ini_set("allow_url_fopen", 1);
+        ini_set("allow_url_fopen", '1');
 
         $json = file_get_contents($strUrl);
 

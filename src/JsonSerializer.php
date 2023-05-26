@@ -15,16 +15,16 @@ class JsonSerializer
     use BitWiser;
 
     public function __construct(
-        private readonly bool $bigIntAsString = true,
-        private readonly bool $allowNulls = false,
-        private readonly bool $allowStatics = true
+        private bool $bigIntAsString = true,
+        private bool $allowNulls = false,
+        private bool $allowStatics = true
     ) {
         if ($this->bigIntAsString) {
             $this->setFlag(JSON_BIGINT_AS_STRING);
         }
     }
 
-    public function serialize(JasonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
+    public function serialize(JasonSerializable|JsonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
     {
         $classObject = new \stdClass;
         $reflectionClass = new ReflectionClass($object);
@@ -38,7 +38,7 @@ class JsonSerializer
 
     private function collectProperties(
         ReflectionClass $reflectionClass,
-        JasonSerializable $object,
+        JasonSerializable|JsonSerializable $object,
         \stdClass $classObject): void
     {
         $properties = $reflectionClass->getProperties(
@@ -84,7 +84,7 @@ class JsonSerializer
 
     private function collectMethods(
         ReflectionClass $reflectionClass,
-        JasonSerializable $object,
+        JasonSerializable|JsonSerializable $object,
         \stdClass $classObject
     ): void
     {

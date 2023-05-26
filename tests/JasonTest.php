@@ -6,6 +6,7 @@ namespace Tests\SamMcDonald\Jason;
 
 use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Jason;
+use SamMcDonald\Jason\Json;
 
 class JasonTest extends TestCase
 {
@@ -64,6 +65,11 @@ JSON;
         static::assertEquals(
             $array,
             Jason::toArray($json, false)
+        );
+
+        static::assertEquals(
+            $array,
+            Json::toArray($json, false)
         );
     }
 }

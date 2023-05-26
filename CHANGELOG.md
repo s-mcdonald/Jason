@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.6 - Deprecated Jason static in favour of new Json static
+### Release Highlights
+* Added 
+  * Added new `Json` static, This class currently extends the `Jason` static class can do.
+  * Added new `JsonSerializer` and `JasonSerializable`.
+* Deprecated Jason static in favour of new Json static
+  `Jason` will be removed in a future release.
+* Bugfix
+  * Removed readonly identifier from arguments as package support php 8 
+
 ## 0.0.5 - Added `toArray` and `fromUrl` on static Jason
 ### Release Highlights
 * Added
