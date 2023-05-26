@@ -15,7 +15,7 @@ class LocalFileLoader
     /**
      * @throws JsonLoadFileException
      */
-    public function readJsonFile(string|\Stringable $pathToFile): string
+    public function readJsonFile(string $pathToFile): string
     {
         if (!file_exists($pathToFile)) {
             throw new JsonLoadFileException(
