@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SamMcDonald\Jason;
 
+use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
 
@@ -32,6 +33,8 @@ class Jason
 
     public static function pretty(string $jsonString): string
     {
+        JsonAsserter::assertStringIsValidJson($jsonString);
+
         return json_encode(
             json_decode($jsonString)
             , JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
