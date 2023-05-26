@@ -4,7 +4,7 @@
   "keywords": ["json", "serializer", "JsonSerializer"],
   "homepage": "https://github.com/s-mcdonald/Jason",
   "license": "MIT",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "authors": [
     {
       "name": "Sam McDonald",
@@ -16,7 +16,7 @@
     "php": ">=8.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10",
+    "phpunit/phpunit": "^9.5",
     "mockery/mockery": "1.5.1"
   },
   "autoload": {
@@ -29,5 +29,15 @@
       "Tests\\SamMcDonald\\Jason\\": "tests/"
     }
   },
-  "minimum-stability": "dev"
+  "minimum-stability": "dev",
+  "scripts": {
+    "build": [
+      "composer dumpautoload",
+      "composer update",
+      "composer install"
+    ],
+    "tests": [
+      "phpunit -c ./phpunit.xml ./tests"
+    ]
+  }
 }
