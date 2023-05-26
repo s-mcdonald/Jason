@@ -123,8 +123,8 @@ class JsonSerializer
             $attributes = $method->getAttributes(Property::class);
             foreach ($attributes as $attrib) {
                 if ($attrib->getName() === Property::class) {
+                    $addToObject = true;
                     foreach ($attrib->getArguments() as $ag) {
-                        $addToObject = true;
                         $addToObjectName = $ag;
                         break;
                     }
