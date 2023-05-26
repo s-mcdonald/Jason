@@ -11,7 +11,9 @@ use SamMcDonald\Jason\Validator\JsonValidator;
 
 class Jason
 {
-   public static function serialize(JasonSerializable $object): string
+    private const ASSOC_ARRAY = true;
+
+    public static function serialize(JasonSerializable $object): string
    {
        $jsonSerializer = new JsonSerializer(true, false, true);
        return $jsonSerializer->serialize($object);
@@ -44,6 +46,13 @@ class Jason
         $json = file_get_contents($strUrl);
 
         return (JsonValidator::isValidJson($json)) ? self::pretty($json) : false;
+    }
+
+    public static function toArray(string $jsonString, ): array
+    {
+        JsonAsserter::assertStringIsValidJson($jsonString);
+
+        return json_decode($jsonString, self::ASSOC_ARRAY);
     }
 
     public static function pretty(string $jsonString): string
