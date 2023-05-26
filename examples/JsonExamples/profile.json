@@ -1,0 +1,16 @@
+{
+  "profile": {
+    "meta": {
+      "title": "Mr.",
+      "name": "Michael Gary Scott",
+      "age": 45
+    },
+    "employment": {
+      "company": "Dunder Mifflin",
+      "title": "Regional Manager"
+    },
+    "profileImage": {
+      "image": "images/mgs.png"
+    }
+  }
+}
