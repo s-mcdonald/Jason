@@ -7,6 +7,7 @@ namespace SamMcDonald\Jason;
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
+use SamMcDonald\Jason\Validator\JsonValidator;
 
 class Jason
 {
@@ -27,8 +28,22 @@ class Jason
     public static function fromFile(string|\Stringable $jsonFile): string
     {
         $fileLoader = new LocalFileLoader();
-        $fileContents = $fileLoader->readJsonFile($jsonFile);
+        $fileContents = $fileLoader->readJsonFile((string) $jsonFile);
         return self::pretty($fileContents);
+    }
+
+    public static function fromUrl(string|\Stringable $url): string|false
+    {
+        $strUrl = (string) $url;
+        if (!filter_var($strUrl, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+
+        ini_set("allow_url_fopen", 1);
+
+        $json = file_get_contents($strUrl);
+
+        return (JsonValidator::isValidJson($json)) ? self::pretty($json) : false;
     }
 
     public static function pretty(string $jsonString): string
