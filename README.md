@@ -2,16 +2,18 @@
 [![Source](https://img.shields.io/badge/source-S_McDonald-blue.svg)](https://github.com/s-mcdonald/Jason)
 [![Source](https://img.shields.io/badge/license-MIT-gold.svg)](https://github.com/s-mcdonald/Jason)
 
-Serialize any object to Json using this syntax.
+Serialize a class using attributes.
 ```php
 $serializer = new JsonSerializer();
 echo $serializer->serialize($objectImplementsJasonSerializable);
 ```
 
-To make this work, just apply the Property attribute to your properties.
-You can pass a string arg if you want to change the name of the property for the
+To make this work, just apply the Property attribute to your properties and/or methods.
+You can pass a string arg to the Attribute if you want to change the name of the Json property for the
 serialized json string.
 
+
+### Step 1: Add Attributes to your class
 ```php
 
 class User implements JasonSerializable
@@ -30,7 +32,10 @@ class User implements JasonSerializable
         $this->creditCard = $credit;
     }
 }
+```
 
+### Step 2: Instantiate an object with values
+```php
 $user = new User();
 $user->name = "Foo";
 $user->phoneNumbers = [
@@ -38,9 +43,12 @@ $user->phoneNumbers = [
     '244755465',
 ];
 $user->setCreditCard(54454.5);
+```
 
+### Step 3: Serialize
+```php
 $serializer = new JsonSerializer();
-echo $serializer->serialize($user);
+echo $serializer->toJsonString($user);
 
 // Produces
 {
@@ -51,7 +59,6 @@ echo $serializer->serialize($user);
     ],
     "creditCard": 54454.5,
 }
-
 ```
 
 ## Documentation
