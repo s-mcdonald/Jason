@@ -14,10 +14,11 @@ class JsonSerializer
 {
     use BitWiser;
 
-    public function __construct(private bool $bigIntAsString = true,
-                                private bool $allowNulls = false,
-                                private bool $allowStatics = true)
-    {
+    public function __construct(
+        private readonly bool $bigIntAsString = true,
+        private readonly bool $allowNulls = false,
+        private readonly bool $allowStatics = true
+    ) {
         if ($this->bigIntAsString) {
             $this->setFlag(JSON_BIGINT_AS_STRING);
         }
@@ -63,8 +64,11 @@ class JsonSerializer
                 continue;
             }
 
+            $addToObject = false;
+
             foreach ($attributes as $attrib) {
                 if ($attrib->getName() === Property::class) {
+                    $addToObject = true;
                     foreach ($attrib->getArguments() as $ag) {
                         $addToObjectName = $ag;
                         break;
@@ -72,7 +76,9 @@ class JsonSerializer
                 }
             }
 
-            $classObject->{$addToObjectName} = $propertyValue;
+            if ($addToObject) {
+                $classObject->{$addToObjectName} = $propertyValue;
+            }
         }
     }
 
