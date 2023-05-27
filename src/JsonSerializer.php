@@ -14,6 +14,8 @@ class JsonSerializer
 {
     use BitWiser;
 
+    public const JS_INT_MAX = 9007199254740991;
+
     public function __construct(
         private bool $bigIntAsString = true,
         private bool $allowNulls = false,
@@ -24,6 +26,11 @@ class JsonSerializer
         }
     }
 
+    public function isDefinedBigIntAsString(): bool
+    {
+        return $this->isFlagSet(JSON_BIGINT_AS_STRING);
+    }
+
     public function serialize(JasonSerializable|JsonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
     {
         $classObject = new \stdClass;
@@ -32,8 +39,11 @@ class JsonSerializer
         $this->collectProperties($reflectionClass, $object, $classObject);
         $this->collectMethods($reflectionClass, $object, $classObject);
 
-        $flags = ($displayMode === JsonOutputStyle::Pretty) ? JSON_PRETTY_PRINT :  0;
-        return json_encode($classObject,  $flags | JSON_BIGINT_AS_STRING);
+        if ($displayMode === JsonOutputStyle::Pretty) {
+            $this->setFlag(JSON_PRETTY_PRINT);
+        }
+
+        return json_encode($classObject, flags: $this->bitWiseFlags);
     }
 
     private function collectProperties(
@@ -77,7 +87,7 @@ class JsonSerializer
             }
 
             if ($addToObject) {
-                $classObject->{$addToObjectName} = $propertyValue;
+                $classObject->{$addToObjectName} = $this->bigIntAsStringValue($propertyValue);
             }
         }
     }
@@ -132,8 +142,24 @@ class JsonSerializer
             }
 
             if ($addToObject) {
-                $classObject->{$addToObjectName} = $methodValue;
+                $classObject->{$addToObjectName} = $this->bigIntAsStringValue($methodValue);
             }
         }
+    }
+
+    private function isStringValueInt(string $value): bool
+    {
+        return filter_var($value, FILTER_VALIDATE_INT) !== false;
+    }
+
+    private function bigIntAsStringValue(mixed $propertyValue): mixed
+    {
+        if (is_int($propertyValue) && $this->isFlagSet(JSON_BIGINT_AS_STRING)) {
+            if ($propertyValue >= self::JS_INT_MAX) {
+                return strval($propertyValue);
+            }
+        }
+
+        return $propertyValue;
     }
 }

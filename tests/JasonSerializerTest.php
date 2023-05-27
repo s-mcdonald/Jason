@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\SamMcDonald\Jason;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Attributes\Property;
+use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\JasonSerializable;
 use SamMcDonald\Jason\JsonSerializer;
 
+/**
+ * @covers \SamMcDonald\Jason\JsonSerializer
+ */
 class JasonSerializerTest extends TestCase
 {
     public function testSerialize(): void
@@ -60,5 +65,68 @@ class JasonSerializerTest extends TestCase
             '{"name":"foo","getFoo":"foo"}',
             $serializer->serialize($class)
         );
+    }
+
+    /**
+     * @dataProvider provideDataForTestBigIntAsString
+     */
+    public function testBigIntAsInt(int $int): void
+    {
+        $class = new class implements JasonSerializable {
+            #[Property]
+            public int $bigInt = 9007199254740991;
+
+        };
+
+        $class->bigInt = $int;
+
+        $serializer = new JsonSerializer(bigIntAsString: false);
+
+        self::assertEquals(
+            sprintf('{"bigInt":%s}', $int),
+            $serializer->serialize($class)
+        );
+    }
+
+    /**
+     * @dataProvider provideDataForTestBigIntAsString
+     */
+    public function testBigIntAsString(int $int): void
+    {
+        $class = new class implements JasonSerializable {
+            #[Property]
+            public int $bigInt = 9007199254740991;
+
+        };
+
+        $class->bigInt = $int;
+
+        $serializer = new JsonSerializer(bigIntAsString: true);
+
+        self::assertEquals(
+            sprintf('{"bigInt":"%s"}', $int),
+            $serializer->serialize($class)
+        );
+    }
+
+    public function provideDataForTestBigIntAsString(): Generator
+    {
+        $jsMax = JsonSerializer::JS_INT_MAX;
+        for ($i = 1; $i < 10000; $i = $i + 500) {
+            $val = $jsMax + $i;
+            yield 'foo' . $val => [$val];
+        }
+    }
+
+    public function testIsDefinedBigIntAsString(): void
+    {
+        $sut = new JsonSerializer(bigIntAsString: true);
+        static::assertTrue($sut->isDefinedBigIntAsString());
+    }
+
+    public function testIsDefinedBigIntAsStringWithFalse(): void
+    {
+        $sut = new JsonSerializer(bigIntAsString: false);
+        static::assertFalse($sut->isDefinedBigIntAsString());
     }
 }
