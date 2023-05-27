@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.0.0 - Version 1 released (Semver versioning begins)
+### Release Highlights
+* [Semver versioning](https://semver.org/) standard start at v1.0.0
+  *  From this point on this package will follow;
+     * MAJOR version when incompatible API changes.
+     * MINOR version when new functionality in a backward compatible manner.
+     * PATCH version when any bugfixes are made in backward compatible manner.
+
+* Added
+  * `JsonSerializableEntity` added 
+  * `Stringable` interface which is an alias to `toPretty`
+  * `createFromFile` on the Json static to create a new Instance of `Json`
+  * `createFromStringable` on the Json static to create a new Instance of `Json`
+  * `createFromUrl` on the Json static to create a new Instance of `Json`
+  * `fromString` will validate json  and output pretty json
+  * Json entity methods added [`toString()`, `toPretty()`, `toObject()`]
+  * `InvalidPropertyException`
+* BC Break
+  * `Json::toArray` renamed to `Json::convertJsonToArray` (reserving to and from prefix for the instantiated object)
+  * `Json::toObject` renamed to `Json::convertFromJsonToObject` (reserving to and from prefix for the instantiated object)
+* Deprecations
+  * static method `fromFile` marked as deprecated
+
+* Bugfix
+  * calling toJsonString bug as serialized was being called with uppercase 'S' 
+  * Serializer can now serialize dynamic properties
+
+## 0.0.10 - Removed: Jason static
+### Release Highlights
+* BC break
+  * Removed the Jason static and now you can access the same functions via Json static
+
 ## 0.0.9 - Removed: Jason static
 ### Release Highlights
 * BC break
