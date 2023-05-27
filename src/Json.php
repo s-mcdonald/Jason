@@ -122,7 +122,7 @@ final class Json implements JsonSerializable, Stringable
         return $this->jsonCache;
     }
 
-    public function toObject(): mixed
+    public function toObject(): JsonSerializable
     {
         return self::convertFromJsonToObject($this->toPretty());
     }
