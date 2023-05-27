@@ -104,6 +104,14 @@ final class Json implements JsonSerializable, Stringable
         );
     }
 
+    public function toCompressed(): string
+    {
+        return json_encode(
+            $this->toObject(),
+            JSON_UNESCAPED_SLASHES
+        );
+    }
+
     public function toString(): string
     {
         return json_encode(
