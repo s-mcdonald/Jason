@@ -8,10 +8,6 @@ use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 
 class LocalFileLoader
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @throws JsonLoadFileException
      */

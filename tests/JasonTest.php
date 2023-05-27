@@ -55,7 +55,7 @@ JSON;
                 "geo" => [
                     "lat" => "-43.9509",
                     "lng" => "-34.4618"
-                ],
+                ]
             ],
           "phone" => "010-692-6593 x09125",
           "website" => "anastasia.net",
@@ -68,12 +68,12 @@ JSON;
 
         static::assertEquals(
             $array,
-            Jason::toArray($json, false)
+            Jason::toArray($json)
         );
 
         static::assertEquals(
             $array,
-            Json::toArray($json, false)
+            Json::toArray($json)
         );
     }
 }

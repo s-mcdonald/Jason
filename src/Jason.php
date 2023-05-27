@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SamMcDonald\Jason;
 
 use SamMcDonald\Jason\Assert\JsonAsserter;
+use SamMcDonald\Jason\Decoders\JsonDecoder;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
 use SamMcDonald\Jason\Validator\JsonValidator;
@@ -51,20 +52,26 @@ class Jason
         return (JsonValidator::isValidJson($json)) ? self::pretty($json) : false;
     }
 
-    public static function toArray(string $jsonString, ): array
+    public static function toArray(string $jsonString, int $depth = 512): array
     {
         JsonAsserter::assertStringIsValidJson($jsonString);
+        $decoder = new JsonDecoder(true, depth: $depth);
+        return ($decoder->decode($jsonString))->getBody();
+    }
 
-        return json_decode($jsonString, self::ASSOC_ARRAY);
+    public static function toObject(string $jsonString, int $depth = 512): array
+    {
+        JsonAsserter::assertStringIsValidJson($jsonString);
+        $decoder = new JsonDecoder(associative: false, depth: $depth);
+        return ($decoder->decode($jsonString))->getBody();
     }
 
     public static function pretty(string $jsonString): string
     {
         JsonAsserter::assertStringIsValidJson($jsonString);
-
         return json_encode(
-            json_decode($jsonString)
-            , JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            ((new JsonDecoder())->decode($jsonString))->getBody(),
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
 }
