@@ -111,4 +111,51 @@ final class Json implements JsonSerializable, Stringable
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
+
+    /**
+     * @todo Create Encoder
+     */
+    public function toPretty(): string
+    {
+        return json_encode(
+            $this->jsonCache,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+        );
+    }
+
+    public function toString(): string
+    {
+        return $this->toPretty();
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
+    public function toArray(): array
+    {
+        return $this->jsonCache;
+    }
+
+    public function toObject(): mixed
+    {
+        return self::convertFromJsonToObject($this->toPretty());
+    }
+
+    /**
+     * @throws InvalidPropertyException
+     */
+    public function __get($key)
+    {
+        if (array_key_exists($key, $this->jsonCache)) {
+            return $this->jsonCache[$key];
+        }
+        throw new InvalidPropertyException();
+    }
+
+    public function __set(int|string $key, mixed $value)
+    {
+        $this->jsonCache[$key] = $value;
+    }
 }
