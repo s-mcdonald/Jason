@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-a - Version 1 DRAFT - (Semver versioning begins)
+## 0.1.0-a - Version 1 DRAFT - (Semver versioning begins)
 ### Release Highlights
 * [Semver versioning](https://semver.org/) standard start at v1.0.0
   *  From this point on this package will follow;
