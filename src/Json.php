@@ -9,7 +9,7 @@ use SamMcDonald\Jason\Decoders\JsonDecoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
-use SamMcDonald\Jason\Validator\JsonValidator;
+use SamMcDonald\Jason\Loaders\UrlLoader;
 use Stringable;
 
 final class Json implements JsonSerializable, Stringable
@@ -21,7 +21,7 @@ final class Json implements JsonSerializable, Stringable
 
     public static function createFromUrl(string $url): self
     {
-        return new self(self::convertJsonToArray(self::fromUrl($url)));
+        return new self(self::convertJsonToArray(UrlLoader::load($url)));
     }
 
     public static function createFromFile(string $fileName): self
