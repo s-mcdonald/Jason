@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7 - Bugfixes: Bitwise operator fix and bigIntAsString fix
+### Release Highlights
+* Bugfix
+  * fixed $bigIntAsString on serializer now fixed will now display string for large ints
+  * fixed bitwise operator to setting flags
+ 
 ## 0.0.6 - Deprecated Jason static in favour of new Json static
 ### Release Highlights
 * Added 
