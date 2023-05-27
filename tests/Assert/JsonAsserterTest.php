@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Exceptions\InvalidArgumentException;
 
+/**
+ * @covers \SamMcDonald\Jason\Assert\JsonAsserter
+ */
 class JsonAsserterTest extends TestCase
 {
     /**

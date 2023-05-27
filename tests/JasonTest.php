@@ -8,6 +8,10 @@ use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Jason;
 use SamMcDonald\Jason\Json;
 
+/**
+ * @cover \SamMcDonald\Jason\Jason
+ * @cover \SamMcDonald\Jason\Json
+ */
 class JasonTest extends TestCase
 {
     public function testToArray(): void
