@@ -15,7 +15,7 @@ trait BitWiser
 
     protected function setFlag(int $flag): void
     {
-        $this->bitWiseFlags &= ~$flag;
+        $this->bitWiseFlags |= $flag;
     }
 
     protected function getFlags(): int
