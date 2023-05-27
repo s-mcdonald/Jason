@@ -22,7 +22,7 @@ final class Json
 
     public static function toJsonString(JsonSerializable $object): string
     {
-        return self::Serialize($object);
+        return self::serialize($object);
     }
 
     /**
