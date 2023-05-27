@@ -8,6 +8,7 @@ use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
+use SamMcDonald\Jason\Exceptions\NotSerializableException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
 use SamMcDonald\Jason\Loaders\UrlLoader;
 use Stringable;
@@ -54,8 +55,17 @@ final class Json implements JsonSerializable, Stringable
 
     public static function mergeCombine(string ...$jsonValue): self
     {
-        throw new \Exception('not yet implemented');
-        return new self(self::convertJsonToArray(self::fromString((string) $jsonValue)));
+        $v = [...$jsonValue];
+
+        $merged = static function () use ($v) {
+            $container = [];
+            foreach ($v as $i) {
+                $container[] = self::createFromStringable($i)->toArray();
+            };
+            return $container;
+        };
+
+        return new self(array_merge(...$merged()));
     }
 
     public static function serialize(JsonSerializable $object): string
