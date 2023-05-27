@@ -6,13 +6,33 @@ namespace SamMcDonald\Jason;
 
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
+use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Loaders\LocalFileLoader;
 use SamMcDonald\Jason\Validator\JsonValidator;
+use Stringable;
 
-final class Json
+final class Json implements JsonSerializable, Stringable
 {
-    private const ASSOC_ARRAY = true;
+    private function __construct(
+        private array $jsonCache
+    ) {
+    }
+
+    public static function createFromUrl(string $url): self
+    {
+        return new self(self::convertJsonToArray(self::fromUrl($url)));
+    }
+
+    public static function createFromFile(string $fileName): self
+    {
+        return new self(self::convertJsonToArray(self::fromFile($fileName)));
+    }
+
+    public static function createFromString(string $jsonString): self
+    {
+        return new self(self::convertJsonToArray(self::fromString($jsonString)));
+    }
 
     public static function serialize(JsonSerializable $object): string
     {
