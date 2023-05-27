@@ -47,6 +47,7 @@ final class Json implements JsonSerializable, Stringable
 
     /**
      * @throws JsonLoadFileException
+     * @deprecated - This will be changed to fetchFromFile
      */
     public static function fromFile(string|\Stringable $jsonFile): string
     {
