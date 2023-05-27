@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace SamMcDonald\Jason;
 
 use ReflectionClass;
+use ReflectionObject;
 use ReflectionProperty;
+use SamMcDonald\Jason\Attributes\JsonObjectAsProperty;
 use SamMcDonald\Jason\Attributes\Property;
 use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\Traits\BitWiser;
@@ -15,6 +17,8 @@ class JsonSerializer
     use BitWiser;
 
     public const JS_INT_MAX = 9007199254740991;
+
+    private bool $serializeAll = false;
 
     public function __construct(
         private bool $bigIntAsString = true,
@@ -34,10 +38,15 @@ class JsonSerializer
     public function serialize(JsonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
     {
         $classObject = new \stdClass;
-        $reflectionClass = new ReflectionClass($object);
+        $reflectionScope = new ReflectionObject($object);
 
-        $this->collectProperties($reflectionClass, $object, $classObject);
-        $this->collectMethods($reflectionClass, $object, $classObject);
+        $classLevelAll = $reflectionScope->getAttributes(JsonObjectAsProperty::class);
+        foreach ($classLevelAll as $k => $v) {
+            $this->serializeAll = true;
+        }
+
+        $this->collectProperties($reflectionScope, $object, $classObject);
+        $this->collectMethods($reflectionScope, $object, $classObject);
 
         if ($displayMode === JsonOutputStyle::Pretty) {
             $this->setFlag(JSON_PRETTY_PRINT);
@@ -47,25 +56,25 @@ class JsonSerializer
     }
 
     private function collectProperties(
-        ReflectionClass $reflectionClass,
+        ReflectionClass $reflectionScope,
         JsonSerializable $object,
         \stdClass $classObject): void
     {
-        $properties = $reflectionClass->getProperties(
+        $properties = $reflectionScope->getProperties(
             ReflectionProperty::IS_PUBLIC |
             ReflectionProperty::IS_PROTECTED |
             ReflectionProperty::IS_PRIVATE
         );
 
         foreach ($properties as $prop) {
-            $attributes = $prop->getAttributes(Property::class);
+            $attributes = $prop->getAttributes();
             $addToObjectName = $prop->getName();
 
             if (!$prop->isInitialized($object)) {
                 continue;
             }
 
-            if ($prop->isStatic() && !$this->allowStatics) {
+            if ($this->serializeAll === false && $prop->isStatic() && !$this->allowStatics) {
                 continue;
             }
 
@@ -76,8 +85,12 @@ class JsonSerializer
 
             $addToObject = false;
 
+            if ($this->serializeAll === true) {
+                $addToObject = true;
+            }
+
             foreach ($attributes as $attrib) {
-                if ($attrib->getName() === Property::class) {
+                if ($attrib->getName() === Property::class ) {
                     $addToObject = true;
                     foreach ($attrib->getArguments() as $ag) {
                         $addToObjectName = $ag;
@@ -93,12 +106,12 @@ class JsonSerializer
     }
 
     private function collectMethods(
-        ReflectionClass $reflectionClass,
+        ReflectionObject $reflectionScope,
         JsonSerializable $object,
         \stdClass $classObject
     ): void
     {
-        $methods = $reflectionClass->getMethods(
+        $methods = $reflectionScope->getMethods(
             ReflectionProperty::IS_PUBLIC |
             ReflectionProperty::IS_PROTECTED |
             ReflectionProperty::IS_PRIVATE
@@ -126,7 +139,7 @@ class JsonSerializer
                 continue;
             }
 
-            if ($method->isStatic() && !$this->allowStatics) {
+            if ($this->serializeAll === false && $method->isStatic() && !$this->allowStatics) {
                 continue;
             }
 
