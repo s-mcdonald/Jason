@@ -7,7 +7,6 @@ namespace Tests\SamMcDonald\Jason;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Attributes\Property;
-use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\JasonSerializable;
 use SamMcDonald\Jason\JsonSerializer;
 
