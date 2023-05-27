@@ -29,9 +29,9 @@ final class Json implements JsonSerializable, Stringable
         return new self(self::convertJsonToArray(self::fromFile($fileName)));
     }
 
-    public static function createFromString(string $jsonString): self
+    public static function createFromStringable(string|Stringable $jsonValue): self
     {
-        return new self(self::convertJsonToArray(self::fromString($jsonString)));
+        return new self(self::convertJsonToArray(self::fromString((string) $jsonValue)));
     }
 
     public static function serialize(JsonSerializable $object): string
@@ -54,6 +54,17 @@ final class Json implements JsonSerializable, Stringable
         $fileLoader = new LocalFileLoader();
         $fileContents = $fileLoader->readJsonFile((string) $jsonFile);
         return self::pretty($fileContents);
+    }
+
+    /**
+     *  Strange function, string to string conversion.
+     *  However, this will validate or throw exception if not valid.
+     */
+    public static function fromString(string|\Stringable $jsonString): string
+    {
+        JsonAsserter::assertStringIsValidJson($jsonString);
+
+        return self::pretty($jsonString);
     }
 
     public static function fromUrl(string|\Stringable $url): string|false
