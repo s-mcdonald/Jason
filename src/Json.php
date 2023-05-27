@@ -81,18 +81,26 @@ final class Json implements JsonSerializable, Stringable
         return (JsonValidator::isValidJson($json)) ? self::pretty($json) : false;
     }
 
-    public static function toArray(string $jsonString, int $depth = 512): array
+    public static function convertJsonToArray(string $jsonString, int $depth = 512): array
     {
         JsonAsserter::assertStringIsValidJson($jsonString);
         $decoder = new JsonDecoder(true, depth: $depth);
         return ($decoder->decode($jsonString))->getBody();
     }
 
-    public static function toObject(string $jsonString, int $depth = 512): array
+    public static function convertFromJsonToObject(
+        string $jsonString,
+        int $depth = 512): JsonSerializable
     {
-        JsonAsserter::assertStringIsValidJson($jsonString);
-        $decoder = new JsonDecoder(associative: false, depth: $depth);
-        return ($decoder->decode($jsonString))->getBody();
+        $array = self::convertJsonToArray($jsonString, $depth);
+
+        $obj = new JsonSerializableEntity();
+
+        foreach ($array as $key => $value) {
+            $obj->{$key} = $value;
+        }
+
+        return $obj;
     }
 
     public static function pretty(string $jsonString): string
