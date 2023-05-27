@@ -8,20 +8,19 @@ use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 
 class LocalFileLoader
 {
-    /**
-     * @throws JsonLoadFileException
-     */
-    public function readJsonFile(string $pathToFile): string
+    private function __construct() {}
+
+    public static function load(string $fileName): string
     {
-        if (!file_exists($pathToFile)) {
+        if (!file_exists($fileName)) {
             throw new JsonLoadFileException(
                 sprintf(
                     'The file %s does not exist or can not be found.',
-                    $pathToFile
+                    $fileName
                 )
             );
         }
 
-        return file_get_contents($pathToFile);
+        return file_get_contents($fileName);
     }
 }

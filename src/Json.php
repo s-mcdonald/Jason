@@ -24,9 +24,12 @@ final class Json implements JsonSerializable, Stringable
         return new self(self::convertJsonToArray(UrlLoader::load($url)));
     }
 
+    /**
+     * @throws JsonLoadFileException
+     */
     public static function createFromFile(string $fileName): self
     {
-        return new self(self::convertJsonToArray(self::fromFile($fileName)));
+        return new self(self::convertJsonToArray(LocalFileLoader::load($fileName)));
     }
 
     public static function createFromStringable(string|Stringable $jsonValue): self
