@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace Tests\SamMcDonald\Jason;
 
 use PHPUnit\Framework\TestCase;
-use SamMcDonald\Jason\Jason;
 use SamMcDonald\Jason\Json;
+use SamMcDonald\Jason\JsonSerializable;
 
 /**
- * @cover \SamMcDonald\Jason\Jason
  * @cover \SamMcDonald\Jason\Json
  */
 class JsonTest extends TestCase
 {
-    public function testToArray(): void
+    public function testConvertJsonToArray(): void
     {
         $json = <<<JSON
 {
@@ -68,7 +67,123 @@ JSON;
 
         static::assertEquals(
             $array,
-            Json::toArray($json)
+            Json::convertJsonToArray($json)
+        );
+    }
+
+    public function testConvertFromJsonToObject(): void
+    {
+        $origJson = <<<JSON
+{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+JSON;
+
+        $prettyJson = <<<JSON
+{
+    "userId": 7,
+    "id": 9,
+    "title": "Mr White",
+    "active": true,
+    "locations": [
+        "usa",
+        "aus"
+    ]
+}
+JSON;
+
+        static::assertInstanceOf(
+            JsonSerializable::class,
+            Json::convertFromJsonToObject($origJson)
+        );
+
+        static::assertEquals(
+            $prettyJson,
+            (string) Json::convertFromJsonToObject($origJson)
+        );
+    }
+
+    public function testConvertFromJsonToObjectCanBeSerialized(): void
+    {
+        $origJson = <<<JSON
+{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}
+JSON;
+
+        $obj = Json::convertFromJsonToObject($origJson);
+
+        static::assertEquals(
+            $origJson,
+            Json::serialize($obj)
+        );
+    }
+
+    public function testToObject(): void
+    {
+        $origJson = <<<JSON
+{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+JSON;
+
+        static::assertInstanceOf(
+            JsonSerializable::class,
+            Json::createFromString($origJson)->toObject()
+        );
+
+        static::assertTrue(
+            Json::createFromString($origJson)->toObject()->active
+        );
+    }
+
+    public function testToArray(): void
+    {
+        $origJson = <<<JSON
+{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+JSON;
+
+        static::assertSame(
+            [
+                'userId' => 7,
+                'id' => 9,
+                'title' => 'Mr White',
+                'active' => true,
+                'locations' => [
+                    0 => 'usa',
+                    1 => 'aus',
+                ]
+            ],
+            Json::createFromString($origJson)->toArray()
+        );
+    }
+
+    public function testToString(): void
+    {
+        $origJson = <<<JSON
+{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+JSON;
+
+        $prettyJson = <<<JSON
+{
+    "userId": 7,
+    "id": 9,
+    "title": "Mr White",
+    "active": true,
+    "locations": [
+        "usa",
+        "aus"
+    ]
+}
+JSON;
+
+        static::assertSame(
+            $prettyJson,
+            Json::createFromString($origJson)->toPretty()
+        );
+
+        static::assertSame(
+            $prettyJson,
+            Json::createFromString($origJson)->toString()
+        );
+
+        static::assertSame(
+            $prettyJson,
+            (string) Json::createFromString($origJson)
         );
     }
 }
