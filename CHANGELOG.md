@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.8 - Added: Decoder and ByPassDecoder
+### Release Highlights
+* Added
+  * new Decoder and ByPass Decoder
+  * fixed bitwise operator to setting flags
+
 ## 0.0.7 - Bugfixes: Bitwise operator fix and bigIntAsString fix
 ### Release Highlights
 * Bugfix
