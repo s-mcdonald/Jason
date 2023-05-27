@@ -49,7 +49,7 @@ final class Json implements JsonSerializable, Stringable
 
     public static function createFromStringable(string|Stringable $jsonValue): self
     {
-        return new self(self::convertJsonToArray(self::fromString((string) $jsonValue)));
+        return new self(self::convertJsonToArray((string) $jsonValue));
     }
 
     public static function mergeCombine(string ...$jsonValue): self
@@ -62,47 +62,6 @@ final class Json implements JsonSerializable, Stringable
     {
         $jsonSerializer = new JsonSerializer(true, false, true);
         return $jsonSerializer->serialize($object);
-    }
-
-    public static function toJsonString(JsonSerializable $object): string
-    {
-        return self::serialize($object);
-    }
-
-    /**
-     * @throws JsonLoadFileException
-     * @deprecated - This will be changed to fetchFromFile
-     */
-    public static function fromFile(string|\Stringable $jsonFile): string
-    {
-        $fileLoader = new LocalFileLoader();
-        $fileContents = $fileLoader->readJsonFile((string) $jsonFile);
-        return self::pretty($fileContents);
-    }
-
-    /**
-     *  Strange function, string to string conversion.
-     *  However, this will validate or throw exception if not valid.
-     */
-    public static function fromString(string|\Stringable $jsonString): string
-    {
-        JsonAsserter::assertStringIsValidJson($jsonString);
-
-        return self::pretty($jsonString);
-    }
-
-    public static function fromUrl(string|\Stringable $url): string|false
-    {
-        $strUrl = (string) $url;
-        if (!filter_var($strUrl, FILTER_VALIDATE_URL)) {
-            return false;
-        }
-
-        ini_set("allow_url_fopen", '1');
-
-        $json = file_get_contents($strUrl);
-
-        return (JsonValidator::isValidJson($json)) ? self::pretty($json) : false;
     }
 
     public static function convertJsonToArray(string $jsonString, int $depth = 512): array
