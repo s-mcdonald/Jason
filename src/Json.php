@@ -14,9 +14,24 @@ use Stringable;
 
 final class Json implements JsonSerializable, Stringable
 {
-    private function __construct(
-        private array $jsonCache
-    ) {
+    /**
+     * @throws NotSerializableException
+     */
+    public static function createFromArray(array $array): self
+    {
+        $isSerializable = static function () use ($array) {
+            $return = true;
+            $arr = [$array];
+            array_walk_recursive($arr, function ($element) use (&$return) {
+                if (is_object($element) && get_class($element) === 'Closure') {
+                    $return = false;
+                }
+            });
+            return $return;
+        };
+
+        $isSerializable() ?? throw new NotSerializableException();
+        return new self($array);
     }
 
     public static function createFromUrl(string $url): self
@@ -166,5 +181,10 @@ final class Json implements JsonSerializable, Stringable
     public function __set(int|string $key, mixed $value)
     {
         $this->jsonCache[$key] = $value;
+    }
+
+    private function __construct(
+        private array $jsonCache
+    ) {
     }
 }
