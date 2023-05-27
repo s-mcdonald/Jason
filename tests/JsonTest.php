@@ -155,7 +155,7 @@ JSON;
     public function testToString(): void
     {
         $origJson = <<<JSON
-{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}
 JSON;
 
         $prettyJson = <<<JSON
@@ -177,20 +177,18 @@ JSON;
         );
 
         static::assertSame(
-            $prettyJson,
+            $origJson,
             Json::createFromStringable($origJson)->toString()
         );
 
         static::assertSame(
-            $prettyJson,
+            $origJson,
             (string) Json::createFromStringable($origJson)
         );
     }
 
     public function testMergeCombine(): void
     {
-        static::markTestSkipped('functionality not ready');
-
         $origJson1 = <<<JSON
 {"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
 JSON;
