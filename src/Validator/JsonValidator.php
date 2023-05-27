@@ -14,10 +14,10 @@ class JsonValidator
             return false;
         }
 
-        return \json_decode($json, true) && json_last_error() === JSON_ERROR_NONE;
+        return \json_decode($json, true) && self::hasDecodeValidationError() === false;
     }
 
-    public static function decodeValidationError(): bool|JsonDecodeException
+    public static function hasDecodeValidationError(): bool|JsonDecodeException
     {
         return match (json_last_error()) {
             JSON_ERROR_NONE => false,
