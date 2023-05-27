@@ -123,11 +123,11 @@ JSON;
 
         static::assertInstanceOf(
             JsonSerializable::class,
-            Json::createFromString($origJson)->toObject()
+            Json::createFromStringable($origJson)->toObject()
         );
 
         static::assertTrue(
-            Json::createFromString($origJson)->toObject()->active
+            Json::createFromStringable($origJson)->toObject()->active
         );
     }
 
@@ -148,7 +148,7 @@ JSON;
                     1 => 'aus',
                 ]
             ],
-            Json::createFromString($origJson)->toArray()
+            Json::createFromStringable($origJson)->toArray()
         );
     }
 
@@ -173,17 +173,37 @@ JSON;
 
         static::assertSame(
             $prettyJson,
-            Json::createFromString($origJson)->toPretty()
+            Json::createFromStringable($origJson)->toPretty()
         );
 
         static::assertSame(
             $prettyJson,
-            Json::createFromString($origJson)->toString()
+            Json::createFromStringable($origJson)->toString()
         );
 
         static::assertSame(
             $prettyJson,
-            (string) Json::createFromString($origJson)
+            (string) Json::createFromStringable($origJson)
+        );
+    }
+
+    public function testMergeCombine(): void
+    {
+        static::markTestSkipped('functionality not ready');
+
+        $origJson1 = <<<JSON
+{"userId": 7,"id": 9,"title": "Mr White","active": true,"locations": ["usa","aus"]}
+JSON;
+        $origJson2 = <<<JSON
+{"userId": 8,"id": 3,"title": "Mr Black","locations": ["usa", "china"]}
+JSON;
+        $expectedResult = <<<JSON
+{"userId": 8,"id": 3,"title": "Mr Black","active": true,"locations": ["usa", "aus", "china"]}
+JSON;
+
+        static::assertSame(
+            $expectedResult,
+            Json::mergeCombine($origJson1, $origJson2)
         );
     }
 }

@@ -34,6 +34,12 @@ final class Json implements JsonSerializable, Stringable
         return new self(self::convertJsonToArray(self::fromString((string) $jsonValue)));
     }
 
+    public static function mergeCombine(string ...$jsonValue): self
+    {
+        throw new \Exception('not yet implemented');
+        return new self(self::convertJsonToArray(self::fromString((string) $jsonValue)));
+    }
+
     public static function serialize(JsonSerializable $object): string
     {
         $jsonSerializer = new JsonSerializer(true, false, true);
