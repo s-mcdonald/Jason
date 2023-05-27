@@ -106,7 +106,10 @@ final class Json implements JsonSerializable, Stringable
 
     public function toString(): string
     {
-        return $this->toPretty();
+        return json_encode(
+            $this->jsonCache,
+            JSON_UNESCAPED_SLASHES
+        );
     }
 
     public function __toString(): string
