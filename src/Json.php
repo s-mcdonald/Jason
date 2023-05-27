@@ -96,18 +96,6 @@ final class Json implements JsonSerializable, Stringable
         return $obj;
     }
 
-    public static function pretty(string $jsonString): string
-    {
-        JsonAsserter::assertStringIsValidJson($jsonString);
-        return json_encode(
-            ((new JsonDecoder())->decode($jsonString))->getBody(),
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-        );
-    }
-
-    /**
-     * @todo Create Encoder
-     */
     public function toPretty(): string
     {
         return json_encode(
