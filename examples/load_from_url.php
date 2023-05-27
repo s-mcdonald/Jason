@@ -2,9 +2,9 @@
 
 require_once '../vendor/autoload.php';
 
-use SamMcDonald\Jason\Jason;
+use SamMcDonald\Jason\Json;
 
-echo Jason::fromUrl('https://jsonplaceholder.typicode.com/todos/1');
+echo Json::fromUrl('https://jsonplaceholder.typicode.com/todos/1');
 
 echo "\n";
 echo "\n";

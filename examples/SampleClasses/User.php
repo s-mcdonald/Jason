@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use SamMcDonald\Jason\Attributes\Property;
-use SamMcDonald\Jason\JasonSerializable;
+use SamMcDonald\Jason\JsonSerializable;
 
-class User implements JasonSerializable
+class User implements JsonSerializable
 {
     #[Property('userName')]
     public string $name;

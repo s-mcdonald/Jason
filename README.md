@@ -5,7 +5,7 @@
 Serialize a class using attributes.
 ```php
 $serializer = new JsonSerializer();
-echo $serializer->serialize($objectImplementsJasonSerializable);
+echo $serializer->serialize($object);
 ```
 
 To make this work, just apply the Property attribute to your properties and/or methods.
@@ -16,7 +16,7 @@ serialized json string.
 ### Step 1: Add Attributes to your class
 ```php
 
-class User implements JasonSerializable
+class User implements JsonSerializable
 {
     #[Property('userName')]
     public string $name;

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.9 - Removed: Jason static
+### Release Highlights
+* BC break
+  * Removed the Jason static and now you can access the same functions via Json static 
+
 ## 0.0.8 - Added: Decoder and ByPassDecoder
 ### Release Highlights
 * Added

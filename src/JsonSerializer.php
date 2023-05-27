@@ -31,7 +31,7 @@ class JsonSerializer
         return $this->isFlagSet(JSON_BIGINT_AS_STRING);
     }
 
-    public function serialize(JasonSerializable|JsonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
+    public function serialize(JsonSerializable $object, JsonOutputStyle $displayMode = JsonOutputStyle::Compressed): string
     {
         $classObject = new \stdClass;
         $reflectionClass = new ReflectionClass($object);
@@ -48,7 +48,7 @@ class JsonSerializer
 
     private function collectProperties(
         ReflectionClass $reflectionClass,
-        JasonSerializable|JsonSerializable $object,
+        JsonSerializable $object,
         \stdClass $classObject): void
     {
         $properties = $reflectionClass->getProperties(
@@ -94,7 +94,7 @@ class JsonSerializer
 
     private function collectMethods(
         ReflectionClass $reflectionClass,
-        JasonSerializable|JsonSerializable $object,
+        JsonSerializable $object,
         \stdClass $classObject
     ): void
     {

@@ -2,9 +2,9 @@
 
 require_once '../vendor/autoload.php';
 
-use SamMcDonald\Jason\Jason;
+use SamMcDonald\Jason\Json;
 
-echo Jason::fromFile('./JsonExamples/profile.json');
+echo Json::fromFile('./JsonExamples/profile.json');
 
 echo "\n";
 echo "\n";

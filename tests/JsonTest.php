@@ -12,7 +12,7 @@ use SamMcDonald\Jason\Json;
  * @cover \SamMcDonald\Jason\Jason
  * @cover \SamMcDonald\Jason\Json
  */
-class JasonTest extends TestCase
+class JsonTest extends TestCase
 {
     public function testToArray(): void
     {
@@ -65,11 +65,6 @@ JSON;
             "bs" => "synergize scalable supply-chains"
           ]
         ];
-
-        static::assertEquals(
-            $array,
-            Jason::toArray($json)
-        );
 
         static::assertEquals(
             $array,

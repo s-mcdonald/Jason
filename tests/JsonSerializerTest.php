@@ -7,17 +7,17 @@ namespace Tests\SamMcDonald\Jason;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Attributes\Property;
-use SamMcDonald\Jason\JasonSerializable;
+use SamMcDonald\Jason\JsonSerializable;
 use SamMcDonald\Jason\JsonSerializer;
 
 /**
  * @covers \SamMcDonald\Jason\JsonSerializer
  */
-class JasonSerializerTest extends TestCase
+class JsonSerializerTest extends TestCase
 {
     public function testSerialize(): void
     {
-        $class = new class implements JasonSerializable {
+        $class = new class implements JsonSerializable {
             #[Property]
             public string $name = 'foo';
 
@@ -46,7 +46,7 @@ class JasonSerializerTest extends TestCase
 
     public function testSerializeWithMethods(): void
     {
-        $class = new class implements JasonSerializable {
+        $class = new class implements JsonSerializable {
             #[Property]
             public string $name = 'foo';
 
@@ -71,7 +71,7 @@ class JasonSerializerTest extends TestCase
      */
     public function testBigIntAsInt(int $int): void
     {
-        $class = new class implements JasonSerializable {
+        $class = new class implements JsonSerializable {
             #[Property]
             public int $bigInt = 9007199254740991;
 
@@ -92,7 +92,7 @@ class JasonSerializerTest extends TestCase
      */
     public function testBigIntAsString(int $int): void
     {
-        $class = new class implements JasonSerializable {
+        $class = new class implements JsonSerializable {
             #[Property]
             public int $bigInt = 9007199254740991;
 
