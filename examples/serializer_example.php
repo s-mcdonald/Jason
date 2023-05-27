@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
+
 require_once './SampleClasses/User.php';
 require_once './SampleClasses/History.php';
 
 use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\JsonSerializer;
-
 
 
 $user = new User();

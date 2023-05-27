@@ -4,7 +4,8 @@ require_once '../vendor/autoload.php';
 
 use SamMcDonald\Jason\Json;
 
-echo Json::fromFile('./JsonExamples/profile.json');
+$json = Json::createFromFile('./JsonExamples/profile.json');
+echo $json->toPretty();
 
 echo "\n";
 echo "\n";
