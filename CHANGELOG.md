@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.1.0-a - Version 1 DRAFT - (Semver versioning begins)
+## 0.1.0 - Version 1 - 27-May-2023
 ### Release Highlights
+* !! Semver versioning begins !!
 * [Semver versioning](https://semver.org/) standard start at v1.0.0
   *  From this point on this package will follow;
      * MAJOR version when incompatible API changes.
@@ -9,29 +10,25 @@
      * PATCH version when any bugfixes are made in backward compatible manner.
 
 * Added
-  * `JsonSerializableEntity` added 
-  * `Stringable` interface which is an alias to `toPretty`
   * `createFromFile` on the Json static to create a new Instance of `Json`
   * `createFromStringable` on the Json static to create a new Instance of `Json`
   * `createFromUrl` on the Json static to create a new Instance of `Json`
-  * `fromString` will validate json  and output pretty json
+  * `createFromArray` on the Json static to create a new Instance of `Json`
   * Json entity methods added [`toString()`, `toPretty()`, `toObject()`]
   * `InvalidPropertyException`
+
 * BC Break
   * Removed Jason static in favour of Json static 
   * `Json::toArray` renamed to `Json::convertJsonToArray` (reserving to and from prefix for the instantiated object)
   * `Json::toObject` renamed to `Json::convertFromJsonToObject` (reserving to and from prefix for the instantiated object)
-* Deprecations
-  * static method `fromFile` marked as deprecated
 
-* Bugfix
-  * calling toJsonString bug as serialized was being called with uppercase 'S' 
-  * Serializer can now serialize dynamic properties
+Many other minor fixes and refactoring. This is the first main release, so at this point on all changes will be documented
+and deprecations will be given at least 2 versions before they are removed.
 
 ## 0.0.9 - Removed: Jason static
 ### Release Highlights
 * BC break
-  * Removed the Jason static and now you can access the same functions via Json static 
+  * Removed the Jason static, and now you can access the same functions via Json static 
 
 ## 0.0.8 - Added: Decoder and ByPassDecoder
 ### Release Highlights
