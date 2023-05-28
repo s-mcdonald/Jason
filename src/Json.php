@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SamMcDonald\Jason;
 
 use SamMcDonald\Jason\Assert\JsonAsserter;
+use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
@@ -94,6 +95,12 @@ final class Json implements JsonSerializable, Stringable
         }
 
         return $obj;
+    }
+
+    public static function createJsonBuilder(): AbstractJsonBuilder
+    {
+        return new class extends AbstractJsonBuilder {
+        };
     }
 
     public function toPretty(): string
