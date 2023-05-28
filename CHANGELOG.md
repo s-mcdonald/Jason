@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.1.0 - Version 1 - 27-May-2023
+## 1.1.0 - Version 1 - 28-May-2023
+### Release Highlights
+* Added JsonBuilder/AbstractJsonBuilder
+  * Accessible from `Json::createJsonBuilder()` to create dynamic and complex Json structures in code fluently.
+  * New `JsonRuntimeException` has been added.
+
+## 1.0.0 - Version 1 - 27-May-2023
 ### Release Highlights
 * !! Semver versioning begins !!
 * [Semver versioning](https://semver.org/) standard start at v1.0.0
