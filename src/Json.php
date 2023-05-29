@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace SamMcDonald\Jason;
 
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
+use SamMcDonald\Jason\Exceptions\InValidJsonStreamException;
 use SamMcDonald\Jason\Encoder\JsonEncoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
@@ -130,6 +133,17 @@ final class Json implements JsonSerializable, Stringable
     public function toArray(): array
     {
         return $this->jsonCache;
+    }
+
+    public function toIterator(): iterable
+    {
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveArrayIterator($this->jsonCache)
+        );
+
+        foreach ($iterator as $key => $element) {
+            yield $key => $element;
+        }
     }
 
     public function toObject(): JsonSerializable
