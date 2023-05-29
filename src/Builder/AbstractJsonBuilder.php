@@ -34,10 +34,15 @@ abstract class AbstractJsonBuilder
         return $this->addProperty($prop,  $value);
     }
 
+    public function addNullProperty(string $prop): self
+    {
+        return $this->addProperty($prop);
+    }
+
     /**
      * @throws JsonRuntimeException
      */
-    protected function addProperty(string $prop, $value): self
+    protected function addProperty(string $prop, $value = null): self
     {
         $this->validatePropertyName($prop) ?? throw new JsonRuntimeException('Unable to add property $prop');
         $this->{$prop} = $value;
