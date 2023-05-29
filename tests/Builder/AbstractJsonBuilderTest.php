@@ -105,6 +105,26 @@ JSON;
         );
     }
 
+    public function testAddNullProperty(): void
+    {
+        $sut = $this->createBuilder();
+
+        $expected = <<<JSON
+{
+    "foo": 12345.678,
+    "bar": null
+}
+JSON;
+
+        $sut->addNumericProperty("foo", 12345.678);
+        $sut->addNullProperty("bar");
+
+        self::assertEquals(
+            $expected,
+            ((string) $sut)
+        );
+    }
+
     private function createBuilder(): AbstractJsonBuilder
     {
         return new class extends AbstractJsonBuilder {};
