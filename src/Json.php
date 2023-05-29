@@ -7,6 +7,7 @@ namespace SamMcDonald\Jason;
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
+use SamMcDonald\Jason\Encoder\JsonEncoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Exceptions\NotSerializableException;
@@ -105,26 +106,20 @@ final class Json implements JsonSerializable, Stringable
 
     public function toPretty(): string
     {
-        return json_encode(
-            $this->jsonCache,
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-        );
+        $encoder = new JsonEncoder(flags: JSON_PRETTY_PRINT);
+        return $encoder->encode($this->jsonCache)->getBody();
     }
 
     public function toCompressed(): string
     {
-        return json_encode(
-            $this->toObject(),
-            JSON_UNESCAPED_SLASHES
-        );
+        $encoder = new JsonEncoder(flags: JSON_UNESCAPED_SLASHES);
+        return $encoder->encode($this->toObject())->getBody();
     }
 
     public function toString(): string
     {
-        return json_encode(
-            $this->jsonCache,
-            JSON_UNESCAPED_SLASHES
-        );
+        $encoder = new JsonEncoder(flags: JSON_UNESCAPED_SLASHES);
+        return $encoder->encode($this->jsonCache)->getBody();
     }
 
     public function __toString(): string

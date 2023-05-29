@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SamMcDonald\Jason\Validator;
 
 use SamMcDonald\Jason\Exceptions\JsonDecodeException;
+use SamMcDonald\Jason\Exceptions\JsonEncodeException;
 
 class JsonValidator
 {
@@ -41,6 +42,28 @@ class JsonValidator
                     'The following decoding error was encountered: `%s`',
                     json_last_error_msg()
                  )
+            ),
+        };
+    }
+
+    /**
+     * @see https://www.php.net/manual/en/json.constants.php
+     */
+    public static function hasEncodeValidationError(): bool|JsonEncodeException
+    {
+        return match (json_last_error()) {
+            JSON_ERROR_NONE => false,
+            JSON_ERROR_DEPTH => new JsonEncodeException(
+                'The maximum stack depth was exceeded.',
+            ),
+            JSON_ERROR_INVALID_PROPERTY_NAME => new JsonEncodeException(
+                'The property name is invalid.'
+            ),
+            default => new JsonEncodeException(
+                sprintf(
+                    'The following encoding errors was encountered: `%s`',
+                    json_last_error_msg()
+                )
             ),
         };
     }

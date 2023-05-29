@@ -11,7 +11,7 @@ Serialize a class using attributes.
 * [Dependencies](#dependencies)
 
 ## Usage
-### Step 1: Add Attributes to your class
+### Using Attributes to Serialize/Encode
 ```php
 
 class User implements JsonSerializable
@@ -19,34 +19,23 @@ class User implements JsonSerializable
     #[Property('userName')]
     public string $name;
 
-    #[Property('phoneNumbers')]
+    #[Property]
     public array $phoneNumbers;
 
-    #[Property]
-    private float $creditCard;
-
-    public function setCreditCard(float $credit): void
+    #[Property('creditCard')]
+    public function getCreditCard(): int
     {
         $this->creditCard = $credit;
     }
 }
 ```
 
-### Step 2: Instantiate an object with values
+### Now Serialize using the Json `static` or the `JsonSerializer`
 ```php
-$user = new User();
-$user->name = "Foo";
-$user->phoneNumbers = [
-    '044455444',
-    '244755465',
-];
-$user->setCreditCard(54454.5);
-```
-
-### Step 3: Serialize
-```php
+echo Json::serialize($user);
+// or use the JsonSerializer
 $serializer = new JsonSerializer();
-echo $serializer->toJsonString($user);
+echo $serializer->serialize($user);
 
 // Produces
 {
@@ -59,8 +48,7 @@ echo $serializer->toJsonString($user);
 }
 ```
 
-
-### JsonBuilder - <small>@since: 1.1.0</small>
+### JsonBuilder
 
 ```php
 
@@ -167,6 +155,18 @@ echo $json->toString(); // ["foo" => "baz","buz" => "qux"}
 ```php
 $json = Json::convertFromJsonToObject('{"foo":"baz","buz":"qux"}');
 echo $json->toString(); // instance of JsonSerializable::class with values
+```
+
+Alongside using the Json entity, there is also a separate Encoder/Decoder that you can use.
+
+### JsonEncoder
+```php
+$encoded = (new JsonEncoder())->encode($someValue)->getBody();
+```
+
+### JsonDecoder
+```php
+$decoded = (new JsonDecoder())->encode($someValue)->getBody();
 ```
 
 <a name="installation"></a>
