@@ -6,7 +6,7 @@ namespace SamMcDonald\Jason\Contracts;
 
 interface ResultInterface
 {
-    public function getBody():mixed;
+    public function getBody(): mixed;
 
     public function getMessage(): string;
 
