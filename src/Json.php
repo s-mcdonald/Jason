@@ -108,11 +108,6 @@ final class Json implements JsonSerializable, Stringable
     {
         $encoder = new JsonEncoder(flags: JSON_PRETTY_PRINT);
         return $encoder->encode($this->jsonCache)->getBody();
-
-        return json_encode(
-            $this->jsonCache,
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-        );
     }
 
     public function toCompressed(): string
