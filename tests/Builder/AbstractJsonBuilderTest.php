@@ -7,6 +7,9 @@ namespace Tests\SamMcDonald\Jason\Builder;
 use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \SamMcDonald\Jason\Builder\AbstractJsonBuilder
+ */
 class AbstractJsonBuilderTest extends TestCase
 {
     public function testAddObjectProperty(): void

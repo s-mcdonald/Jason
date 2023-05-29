@@ -21,4 +21,3 @@ class ByPassDecoderTest extends TestCase
         static::assertIsString($sut->decode($json)->getBody());
     }
 }
-

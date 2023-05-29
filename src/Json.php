@@ -45,6 +45,8 @@ final class Json implements JsonSerializable, Stringable
     }
 
     /**
+     * Note that the contents of the file must be valid Json.
+     *
      * @throws JsonLoadFileException
      */
     public static function createFromFile(string $fileName): self
