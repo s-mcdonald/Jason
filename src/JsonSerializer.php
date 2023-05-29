@@ -9,6 +9,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use SamMcDonald\Jason\Attributes\JsonObjectAsProperty;
 use SamMcDonald\Jason\Attributes\Property;
+use SamMcDonald\Jason\Encoder\JsonEncoder;
 use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\Traits\BitWiser;
 
@@ -52,7 +53,8 @@ class JsonSerializer
             $this->setFlag(JSON_PRETTY_PRINT);
         }
 
-        return json_encode($classObject, flags: $this->bitWiseFlags);
+        $encoder = new JsonEncoder(flags: $this->bitWiseFlags);
+        return $encoder->encode($classObject)->getBody();
     }
 
     private function collectProperties(
