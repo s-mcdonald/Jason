@@ -1,6 +1,13 @@
 # Changelog
 
-## 1.1.0 - Version 1 - 28-May-2023
+## 1.2.0 - 30-May-2023
+### Release Highlights
+* Added 
+  * [Recursive iterator](https://github.com/s-mcdonald/Jason/commit/2a1e4bdd780fe94468ca4a25e635e70b9cefa04f)
+  * [Add Nulls property values to the JsonBuilder](https://github.com/s-mcdonald/Jason/commit/2a04f3d7eabe1d8caf18e38d8ad1737ecfdd1dac)
+  * [New Encoder](https://github.com/s-mcdonald/Jason/commit/201564fa8ed1419717bd8cda59dad61d715cc13a)
+
+## 1.1.0 - 28-May-2023
 ### Release Highlights
 * Added JsonBuilder/AbstractJsonBuilder
   * Accessible from `Json::createJsonBuilder()` to create dynamic and complex Json structures in code fluently.

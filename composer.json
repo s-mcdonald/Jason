@@ -4,7 +4,7 @@
   "keywords": ["json-builder", "JsonBuilder", "Json Decoder", "Json Utilities", "json", "serializer", "JsonSerializer"],
   "homepage": "https://github.com/s-mcdonald/Jason",
   "license": "MIT",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "authors": [
     {
       "name": "Sam McDonald",

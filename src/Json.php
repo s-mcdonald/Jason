@@ -9,7 +9,6 @@ use RecursiveIteratorIterator;
 use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
-use SamMcDonald\Jason\Exceptions\InValidJsonStreamException;
 use SamMcDonald\Jason\Encoder\JsonEncoder;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;

@@ -169,6 +169,16 @@ $encoded = (new JsonEncoder())->encode($someValue)->getBody();
 $decoded = (new JsonDecoder())->encode($someValue)->getBody();
 ```
 
+
+### Recursive Iteration of Json
+
+```php
+foreach($json->toIterator() as $value) {
+    // will return all property values no matter how deep
+    // and nested in the Json structure.
+}
+```
+
 <a name="installation"></a>
 ## Installation
 
