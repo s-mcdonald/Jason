@@ -152,6 +152,50 @@ JSON;
         );
     }
 
+    public function testToPretty(): void
+    {
+        static::assertSame(
+            $this->getExpectedJsonPretty(),
+            Json::createFromStringable($this->getExpectedJsonCompressed())->toPretty()
+        );
+    }
+
+    public function getExpectedJsonCompressed(): string
+    {
+        return <<<JSON
+{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}
+JSON;
+
+        $prettyJson = <<<JSON
+{
+    "userId": 7,
+    "id": 9,
+    "title": "Mr White",
+    "active": true,
+    "locations": [
+        "usa",
+        "aus"
+    ]
+}
+JSON;
+    }
+
+    public function getExpectedJsonPretty(): string
+    {
+        return <<<JSON
+{
+    "userId": 7,
+    "id": 9,
+    "title": "Mr White",
+    "active": true,
+    "locations": [
+        "usa",
+        "aus"
+    ]
+}
+JSON;
+    }
+
     public function testToString(): void
     {
         $origJson = <<<JSON
@@ -170,11 +214,6 @@ JSON;
     ]
 }
 JSON;
-
-        static::assertSame(
-            $prettyJson,
-            Json::createFromStringable($origJson)->toPretty()
-        );
 
         static::assertSame(
             $origJson,
