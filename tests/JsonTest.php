@@ -245,4 +245,40 @@ JSON;
             Json::mergeCombine($origJson1, $origJson2)->toString()
         );
     }
+
+    public function testIterator(): void
+    {
+        $json = <<<JSON
+{
+    "userId": 7,
+    "id": 9,
+    "title": "Mr White",
+    "active": true,
+    "deep": {
+      "dive": {
+        "audi": "eu",
+        "ford": "usa"
+      }
+    },
+    "locations": [
+        "usa",
+        "aus"
+    ]
+}
+JSON;
+        $json = Json::createFromStringable($json);
+
+        self::assertEquals([
+                'userId' => 7,
+                'id' => 9,
+                'title' => 'Mr White',
+                'active' => true,
+                'audi' => 'eu',
+                'ford' => 'usa',
+                0 => 'usa',
+                1 => 'aus',
+            ],
+            iterator_to_array($json->toIterator())
+        );
+    }
 }
