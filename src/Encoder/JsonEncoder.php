@@ -20,7 +20,7 @@ class JsonEncoder implements EncoderInterface
 
     public function encode($value): ResultInterface
     {
-        $encoded = json_encode($value, $this->depth, $this->flags);
+        $encoded = json_encode($value, $this->flags, $this->depth);
         if (JsonValidator::hasEncodeValidationError()) {
             return new InValidEncodeResult(json_last_error_msg());
         }
