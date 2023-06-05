@@ -10,6 +10,7 @@ use SamMcDonald\Jason\Assert\JsonAsserter;
 use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\Decoders\JsonDecoder;
 use SamMcDonald\Jason\Encoder\JsonEncoder;
+use SamMcDonald\Jason\Enums\JsonOutputStyle;
 use SamMcDonald\Jason\Exceptions\InvalidPropertyException;
 use SamMcDonald\Jason\Exceptions\JsonLoadFileException;
 use SamMcDonald\Jason\Exceptions\NotSerializableException;
@@ -74,10 +75,11 @@ final class Json implements JsonSerializable, Stringable
         return new self(array_merge(...$merged()));
     }
 
-    public static function serialize(JsonSerializable $object): string
-    {
-        $jsonSerializer = new JsonSerializer(true, false, true);
-        return $jsonSerializer->serialize($object);
+    public static function serialize(
+        JsonSerializable $object,
+        JsonOutputStyle $pretty = JsonOutputStyle::Compressed
+    ): string {
+        return (new JsonSerializer(true, false, true))->serialize($object, $pretty);
     }
 
     public static function convertJsonToArray(string $jsonString, int $depth = 512): array

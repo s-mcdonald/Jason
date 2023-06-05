@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace SamMcDonald\Jason;
 
-use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 use ReflectionObject;
 use ReflectionProperty;
 use SamMcDonald\Jason\Attributes\JsonObjectAsProperty;
@@ -42,7 +43,7 @@ class JsonSerializer
         $reflectionScope = new ReflectionObject($object);
 
         $classLevelAll = $reflectionScope->getAttributes(JsonObjectAsProperty::class);
-        foreach ($classLevelAll as $k => $v) {
+        if (count($classLevelAll)) {
             $this->serializeAll = true;
         }
 
@@ -58,7 +59,7 @@ class JsonSerializer
     }
 
     private function collectProperties(
-        ReflectionClass $reflectionScope,
+        ReflectionObject $reflectionScope,
         JsonSerializable $object,
         \stdClass $classObject): void
     {
@@ -72,14 +73,14 @@ class JsonSerializer
             $attributes = $prop->getAttributes();
             $addToObjectName = $prop->getName();
 
-            if (!$prop->isInitialized($object)) {
+            if (
+                !$prop->isInitialized($object) ||
+                ($this->serializeAll === false && $prop->isStatic() && !$this->allowStatics)
+            ) {
                 continue;
             }
 
-            if ($this->serializeAll === false && $prop->isStatic() && !$this->allowStatics) {
-                continue;
-            }
-
+            $prop->setAccessible(true);
             $propertyValue = $prop->getValue($object);
             if (!$this->allowNulls && $propertyValue === null) {
                 continue;
@@ -114,45 +115,47 @@ class JsonSerializer
     ): void
     {
         $methods = $reflectionScope->getMethods(
-            ReflectionProperty::IS_PUBLIC |
-            ReflectionProperty::IS_PROTECTED |
-            ReflectionProperty::IS_PRIVATE
+            ReflectionMethod::IS_PUBLIC |
+            ReflectionMethod::IS_PROTECTED |
+            ReflectionMethod::IS_PRIVATE
         );
 
         foreach ($methods as $method) {
             $addToObject = false;
             $addToObjectName = $method->getName();
 
-            if ($method->isConstructor() || $method->isDestructor() || !$method->hasReturnType()) {
-                continue;
-            }
-
             $returnType = $method->getReturnType();
-            if ($returnType->getName() === 'void') {
+
+            if ($method->isConstructor() ||
+                $method->isDestructor() ||
+                !$method->hasReturnType() ||
+                $method->getNumberOfParameters() > 0 ||
+                $method->getName() === '__toString' ||
+                $returnType->getName() === 'void'
+            ) {
                 continue;
             }
 
-            $methodValue = $object->{$method->getName()}();
-            if (!$this->allowNulls && $methodValue === null) {
+            $method->setAccessible(true);
+            try {
+                $methodValue = $method->invoke($object);
+            } catch (ReflectionException $e) {
                 continue;
             }
 
-            if ($method->getNumberOfParameters() > 0) {
-                continue;
-            }
-
-            if ($this->serializeAll === false && $method->isStatic() && !$this->allowStatics) {
+            if (
+                !$this->allowNulls && $methodValue === null ||
+                ($this->serializeAll === false && $method->isStatic() && !$this->allowStatics)
+            ) {
                 continue;
             }
 
             $attributes = $method->getAttributes(Property::class);
             foreach ($attributes as $attrib) {
-                if ($attrib->getName() === Property::class) {
-                    $addToObject = true;
-                    foreach ($attrib->getArguments() as $ag) {
-                        $addToObjectName = $ag;
-                        break;
-                    }
+                $addToObject = true;
+                foreach ($attrib->getArguments() as $ag) {
+                    $addToObjectName = $ag;
+                    break;
                 }
             }
 

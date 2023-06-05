@@ -103,9 +103,7 @@ JSON;
 
     public function testConvertFromJsonToObjectCanBeSerialized(): void
     {
-        $origJson = <<<JSON
-{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}
-JSON;
+        $origJson = '{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}';
 
         $obj = Json::convertFromJsonToObject($origJson);
 
