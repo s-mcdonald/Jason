@@ -13,6 +13,15 @@ use SamMcDonald\Jason\JsonSerializable;
  */
 class JsonTest extends TestCase
 {
+    public function testJsonEmpty(): void
+    {
+        $pretty = <<<JSON
+[]
+JSON;
+
+        self::assertEquals($pretty, Json::empty()->toPretty());
+    }
+
     public function testConvertJsonToArray(): void
     {
         $json = <<<JSON

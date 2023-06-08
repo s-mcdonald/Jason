@@ -20,6 +20,11 @@ use Stringable;
 
 final class Json implements JsonSerializable, Stringable
 {
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
     /**
      * @throws NotSerializableException
      */
