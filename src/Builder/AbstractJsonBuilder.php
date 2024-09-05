@@ -6,8 +6,9 @@ namespace SamMcDonald\Jason\Builder;
 
 use SamMcDonald\Jason\Exceptions\JsonRuntimeException;
 use SamMcDonald\Jason\Json;
+use SamMcDonald\Jason\JsonSerializable;
 
-abstract class AbstractJsonBuilder
+abstract class AbstractJsonBuilder implements JsonSerializable
 {
     public function addObjectProperty(string $prop, AbstractJsonBuilder $value): self
     {

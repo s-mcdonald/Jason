@@ -13,6 +13,15 @@ use SamMcDonald\Jason\JsonSerializable;
  */
 class JsonTest extends TestCase
 {
+    public function testJsonEmpty(): void
+    {
+        $pretty = <<<JSON
+[]
+JSON;
+
+        self::assertEquals($pretty, Json::empty()->toPretty());
+    }
+
     public function testConvertJsonToArray(): void
     {
         $json = <<<JSON
@@ -103,9 +112,7 @@ JSON;
 
     public function testConvertFromJsonToObjectCanBeSerialized(): void
     {
-        $origJson = <<<JSON
-{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}
-JSON;
+        $origJson = '{"userId":7,"id":9,"title":"Mr White","active":true,"locations":["usa","aus"]}';
 
         $obj = Json::convertFromJsonToObject($origJson);
 

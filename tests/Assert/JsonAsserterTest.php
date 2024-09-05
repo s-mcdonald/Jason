@@ -54,7 +54,9 @@ class JsonAsserterTest extends TestCase
     {
         return [
             'empty string is invalid' => [
-                '{"foo":"bar"}'
+                '{"foo":"bar"}',
+                '{".":"dot"}',
+                '{",":"comma"}',
             ],
         ];
     }

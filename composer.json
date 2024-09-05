@@ -1,6 +1,6 @@
 {
   "name": "s-mcdonald/jason",
-  "description": "Jason is a PHP utility for working with Json objects. The main feature is serializing objects to Json strings with Attributes",
+  "description": "Jason (JSON) is a PHP library that allows you to serialize classes with attributes, build Json structures with a builder and much more.",
   "keywords": ["json-builder", "JsonBuilder", "Json Decoder", "Json Utilities", "json", "serializer", "JsonSerializer"],
   "homepage": "https://github.com/s-mcdonald/Jason",
   "license": "MIT",

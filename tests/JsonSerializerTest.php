@@ -7,6 +7,7 @@ namespace Tests\SamMcDonald\Jason;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use SamMcDonald\Jason\Attributes\Property;
+use SamMcDonald\Jason\Builder\AbstractJsonBuilder;
 use SamMcDonald\Jason\JsonSerializable;
 use SamMcDonald\Jason\JsonSerializer;
 
@@ -15,54 +16,64 @@ use SamMcDonald\Jason\JsonSerializer;
  */
 class JsonSerializerTest extends TestCase
 {
-    public function testSerialize(): void
+    public function testSerializeProperties(): void
     {
-        $class = new class implements JsonSerializable {
+        $class = new class extends AbstractJsonBuilder implements JsonSerializable {
             #[Property]
-            public string $name = 'foo';
+            public string $namePublicProperty = 'foo';
+
+            #[Property]
+            protected string $nameProtectedProperty = 'baz';
+
+            #[Property]
+            private string $namePrivateProperty = 'bar';
+
+            public string $namePublicPropertyNoAttribute = 'do-not-serialize1';
+
+            protected string $nameProtectedPropertyNoAttribute = 'do-not-serialize2';
+
+            private string $namePrivatePropertyNoAttribute = 'do-not-serialize3';
 
             #[Property]
             public int $age = 25;
 
             #[Property]
             public array $collection = [
-                'ford',
-                'ferrari',
-                'porche'
+                'qux',
+                'fiz',
+                'dan'
             ];
-
-            public string $doNotSerialize = 'oops';
-
-            public function __construct() {}
         };
 
         $serializer = new JsonSerializer();
 
         self::assertEquals(
-            '{"name":"foo","age":25,"collection":["ford","ferrari","porche"]}',
+            '{"namePublicProperty":"foo","nameProtectedProperty":"baz","namePrivateProperty":"bar","age":25,"collection":["qux","fiz","dan"]}',
             $serializer->serialize($class)
         );
     }
 
     public function testSerializeWithMethods(): void
     {
-        $class = new class implements JsonSerializable {
-            #[Property]
-            public string $name = 'foo';
-
-            public string $doNotSerialize = 'oops';
-
+        $class = new class extends AbstractJsonBuilder implements JsonSerializable {
             #[Property]
             public function getFoo(): string { return "foo"; }
 
             public function getBar(): string { return "bar"; }
+
+            #[Property]
+            protected function getProtected(): string { return "quz"; }
+
+            #[Property]
+            private function getPrivate(): string { return "zup"; }
+            private function getPrivateNoAccess(): string { return "bang"; }
         };
 
-        $serializer = new JsonSerializer();
+        $sut = new JsonSerializer();
 
         self::assertEquals(
-            '{"name":"foo","getFoo":"foo"}',
-            $serializer->serialize($class)
+            '{"getFoo":"foo","getProtected":"quz","getPrivate":"zup"}',
+            $sut->serialize($class)
         );
     }
 
